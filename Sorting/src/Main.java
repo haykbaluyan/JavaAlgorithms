@@ -54,9 +54,30 @@ public class Main {
 		
 	}
 	
+	//insertion sort -> for each iteration check current element with the previous one and exchange if not in order
+	//worst complexity is O(n^2), average is O(n^2), best case O(n)
+	//insertion sort also is "in place" and stable
+	//for small inputs seems insertion sort is better than selection and bubble, however for big inputs they are almost saem
+	//number of performed swaps can be O(n^2) which is bad compared with O(n) swaps in case of selection sort
+	public static void insertionSort(int[] arrayToSort){
+		for(int i=1;i<arrayToSort.length;i++){
+			for(int j=i-1;j>=0;j--){
+				if(arrayToSort[j+1]<arrayToSort[j]){
+					int tmp=arrayToSort[j+1];
+					arrayToSort[j+1]=arrayToSort[j];
+					arrayToSort[j]=tmp;
+				}
+				
+			}
+		}
+		for(int i=0;i<arrayToSort.length;i++){
+			System.out.print(arrayToSort[i]+" ");
+		}
+		System.out.println();
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int n=1000;
+		int n=10000;
 		int []arrayToSort=new int[n];
 		for(int i=0;i<arrayToSort.length;i++){
 			arrayToSort[i]=arrayToSort.length-i;
@@ -74,6 +95,15 @@ public class Main {
 		bubbleSort(arrayToSortBubble);
 		long endTimeBubble=System.nanoTime();
 		System.out.println(endTimeBubble-startTimeBubble);
+		
+		int []arrayToSortInsertion=new int[n];
+		for(int i=0;i<arrayToSortInsertion.length;i++){
+			arrayToSortInsertion[i]=arrayToSortInsertion.length-i;
+		}
+		long startTimeInsertion=System.nanoTime();
+		insertionSort(arrayToSortBubble);
+		long endTimeInsertion=System.nanoTime();
+		System.out.println(endTimeInsertion-startTimeInsertion);
 		
 	}
 
