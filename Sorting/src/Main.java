@@ -74,10 +74,55 @@ public class Main {
 			System.out.print(arrayToSort[i]+" ");
 		}
 		System.out.println();
+	
+	}
+	
+	//merge sort -> divide array into two parts, sort them using again merge sort and then merge them using O(n) time algorithm
+	//merge sort has time complexity O(nlogn) for worst,average and best cases
+	//merge sort is better than selection, bubble and insertion sort even for small number of inputs  
+	//merge sort is stable (for implementation given below), however it is not "in place"
+	//for mergin step merge sort requires O(n) extra memory
+	public static void mergeSort(int[] arrayToSort,int start, int end){
+		
+		if(start<end-1){
+			int mid=start+(end-start)/2;
+			
+			mergeSort(arrayToSort,start,mid);
+			mergeSort(arrayToSort,mid,end);
+			merge(arrayToSort,start,mid,end);
+		}
+		
+	}
+	public static void merge(int[] arrayToSort,int start, int mid, int end){
+
+		int indFirst=start;
+		int indSecond=mid;
+		int []mergeArray=new int[end-start];
+		int indMerge=0;
+		while(indFirst<mid && indSecond<end){
+			if(arrayToSort[indFirst]<arrayToSort[indSecond]){
+				mergeArray[indMerge++]=arrayToSort[indFirst++];
+			}
+			else{
+				mergeArray[indMerge++]=arrayToSort[indSecond++];
+			}
+		}
+		while(indFirst<mid){
+			mergeArray[indMerge++]=arrayToSort[indFirst++];
+		}
+		while(indSecond<end){
+			mergeArray[indMerge++]=arrayToSort[indSecond++];
+		}
+		
+		for(int i=start;i<end;i++){
+			arrayToSort[i]=mergeArray[i-start];
+		}
+		
+	
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int n=10000;
+		int n=200;
 		int []arrayToSort=new int[n];
 		for(int i=0;i<arrayToSort.length;i++){
 			arrayToSort[i]=arrayToSort.length-i;
@@ -101,9 +146,23 @@ public class Main {
 			arrayToSortInsertion[i]=arrayToSortInsertion.length-i;
 		}
 		long startTimeInsertion=System.nanoTime();
-		insertionSort(arrayToSortBubble);
+		insertionSort(arrayToSortInsertion);
 		long endTimeInsertion=System.nanoTime();
 		System.out.println(endTimeInsertion-startTimeInsertion);
+		
+		int []arrayToSortMerge=new int[n];
+		for(int i=0;i<arrayToSortMerge.length;i++){
+			arrayToSortMerge[i]=arrayToSortMerge.length-i;
+		}
+	
+		long startTimeMerge=System.nanoTime();
+		mergeSort(arrayToSortMerge,0,arrayToSortMerge.length);
+		long endTimeMerge=System.nanoTime();
+		for(int i=0;i<arrayToSortMerge.length;i++){
+			System.out.print(arrayToSortMerge[i]+" ");
+		}
+		System.out.println();
+		System.out.println(endTimeMerge-startTimeMerge);
 		
 	}
 
