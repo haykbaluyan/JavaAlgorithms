@@ -81,7 +81,7 @@ public class Main {
 	//merge sort has time complexity O(nlogn) for worst,average and best cases
 	//merge sort is better than selection, bubble and insertion sort even for small number of inputs  
 	//merge sort is stable (for implementation given below), however it is not "in place"
-	//for mergin step merge sort requires O(n) extra memory
+	//for merging step merge sort requires O(n) extra memory
 	public static void mergeSort(int[] arrayToSort,int start, int end){
 		
 		if(start<end-1){
@@ -120,9 +120,70 @@ public class Main {
 		
 	
 	}
+	
+	//the max heap is binary complete tree, where any node is greater than all its children nodes
+	//the min heap is bianry complete tree, where any node is smaller than all its children nodes
+	//to heapify the array we need to go from bottom up and heapify each of them recursively
+	//the complexity is a bit tricky, for each of n elements you need to recursively call heapify at most logn time
+	//hence the complexity of heapify seems to be O(nlogn), however it is actually O(n), 
+	//because you don't call heapify exactly logn time (you do less)
+	//for 2^h nodes you call heapify 0 times, for 2^(h-1) you call it at most 1 times, for 2^(h-2) nodes you call it at most 2 times and so on
+	//hence you can prove that complexity is O(n)
+	//for more details see http://stackoverflow.com/questions/9755721/build-heap-complexity
+	
+	public static void maxHeapify(int []arrayToHeapify,int heapSize,int i){
+		
+			int left=2*i+1;
+			int right=2*i+2;
+			int index=i;
+			if(left<heapSize && arrayToHeapify[i]<arrayToHeapify[left]){
+				index=left;
+			}
+			if(right<heapSize && arrayToHeapify[index]<arrayToHeapify[right]){
+				index=right;
+			}
+			
+			if(index!=i){
+				int tmp=arrayToHeapify[i];
+				arrayToHeapify[i]=arrayToHeapify[index];
+				arrayToHeapify[index]=tmp;
+				maxHeapify(arrayToHeapify,heapSize,index);
+			}
+			
+		
+	}
+	
+	//time comlexity O(nlogn), however merge sort far more better (both for small and big inputs)
+	//heap sort is "in place" compare to merge sort, which is not
+	//heap sort is not "stable" with implementation below, however any not stable sorting algorithm can be made stable
+	public static void heapSort(int []arrayToSort, int heapSize){
+		
+		//this part takes O(n) time
+		for(int i=arrayToSort.length/2-1;i>=0;i--){
+			maxHeapify(arrayToSort,arrayToSort.length,i);
+		}
+		
+	
+		//this part takes O(nlogn) since each heapify takes O(logn) time 
+		//(we saw that in case of building heap maxHeapify  did not take exactly O(logn), but less)
+		while(heapSize>0){
+			int tmp=arrayToSort[0];
+			arrayToSort[0]=arrayToSort[heapSize-1];
+			arrayToSort[heapSize-1]=tmp;
+			maxHeapify(arrayToSort,heapSize-1,0);
+			heapSize--;
+		
+		}
+		
+		for(int i=0;i<arrayToSort.length;i++){
+			System.out.print(arrayToSort[i]+" ");
+		}
+		System.out.println();
+		
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int n=200;
+		int n=6;
 		int []arrayToSort=new int[n];
 		for(int i=0;i<arrayToSort.length;i++){
 			arrayToSort[i]=arrayToSort.length-i;
@@ -163,6 +224,17 @@ public class Main {
 		}
 		System.out.println();
 		System.out.println(endTimeMerge-startTimeMerge);
+		
+		int []arrayToHeapSort=new int[n];
+		for(int i=0;i<arrayToHeapSort.length;i++){
+			arrayToHeapSort[i]=i+1;
+		}
+		
+		long startTimeHeapSort=System.nanoTime();
+		heapSort(arrayToHeapSort,arrayToHeapSort.length);
+		long endTimeHeapSort=System.nanoTime();
+		System.out.println(endTimeHeapSort-startTimeHeapSort);
+		
 		
 	}
 
