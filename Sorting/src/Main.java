@@ -181,9 +181,47 @@ public class Main {
 		System.out.println();
 		
 	}
+	
+	//quick sort -> practically very quick algorithm tos ort an array
+	//this algorithm takes a pivot and partition array, than recursively sorts both parts
+	//worst case complexity is O(n^2), when we have already sorted or reversed sorted array
+	//avcerage and best case complexity is O(nlogn)
+	//practicaly this algorithm outperforms other sorting algorithms
+	//quicksort is "in place" however it is not stable
+	public static void quickSort(int []arrayToSort, int start, int end){
+		
+		if(start<end-1){
+			
+			int pivotIndex=partitionQuickSort(arrayToSort,start,end);
+			quickSort(arrayToSort,start,pivotIndex);
+			quickSort(arrayToSort,pivotIndex+1,end);
+		}
+		
+		
+	}
+	
+	//partition takes O(n) time
+	public static int partitionQuickSort(int []arrayToSort,int start,int end){
+		int pivot=arrayToSort[end-1];
+		int j=start;
+		for(int i=start; i<end-1;i++){
+			if(arrayToSort[i]<=pivot){
+				if(j!=i){
+					int tmp=arrayToSort[i];
+					arrayToSort[i]=arrayToSort[j];
+					arrayToSort[j]=tmp;
+				}
+				j++;
+			}	
+		}
+		int tmp=pivot;
+		pivot=arrayToSort[j];
+		arrayToSort[j]=tmp;
+		return j;
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int n=6;
+		int n=1000;
 		int []arrayToSort=new int[n];
 		for(int i=0;i<arrayToSort.length;i++){
 			arrayToSort[i]=arrayToSort.length-i;
@@ -234,6 +272,22 @@ public class Main {
 		heapSort(arrayToHeapSort,arrayToHeapSort.length);
 		long endTimeHeapSort=System.nanoTime();
 		System.out.println(endTimeHeapSort-startTimeHeapSort);
+		
+		
+		int []arrayToQuickSort=new int[n];
+		for(int i=0;i<arrayToQuickSort.length;i++){
+			arrayToQuickSort[i]=arrayToQuickSort.length-i;
+		}
+	
+		long startTimeQuick=System.nanoTime();
+		mergeSort(arrayToQuickSort,0,arrayToQuickSort.length);
+		long endTimeQuick=System.nanoTime();
+		for(int i=0;i<arrayToQuickSort.length;i++){
+			System.out.print(arrayToQuickSort[i]+" ");
+		}
+		System.out.println();
+		System.out.println(endTimeQuick-startTimeQuick);
+		
 		
 		
 	}
