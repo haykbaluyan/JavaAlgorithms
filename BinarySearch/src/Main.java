@@ -58,6 +58,28 @@ public class Main {
 			return -1;
 		}
 		
+	//interpolation search
+		// complexity is O(log(logn)) and in pracitce this showssame results as iterative binary search
+		public static long interpolSearch(int[] sortedArray, int key){
+			
+			long start=0;
+			long end=sortedArray.length;
+			for(int i=0;i<5;i++){
+				
+					long mid=start+(end-1-start)*(key-sortedArray[(int) start])/(sortedArray[(int) (end-1)]-sortedArray[(int) start]);
+				if(sortedArray[(int) mid]==key){
+					return mid;
+				}
+				if(sortedArray[(int) mid]>key){
+					end=mid;
+				}
+				else{
+					start=mid+1;
+				}
+				
+			}
+			return -1;
+		}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		int[] sortedArray=new int[10000000];
@@ -77,6 +99,11 @@ public class Main {
 		System.out.println(endTime2-endTime1);
 		System.out.println(endTime3-endTime2);
 		
+		
+		long startTimeInterPol=System.nanoTime();
+		System.out.println(interpolSearch(sortedArray,16-1));
+		long endTimeInterPol=System.nanoTime();
+		System.out.println(endTimeInterPol-startTimeInterPol);
 		
 	}
 
