@@ -1,4 +1,7 @@
 
+import java.util.Stack;
+
+
 public class Main {
 	
 	//selection sort -> each time find min/max element and exchange with the first element and do the same with the remaining array 
@@ -199,7 +202,29 @@ public class Main {
 		
 		
 	}
+	//iterative quicksort -> usually slower than recursive version of quick sort, maybe because we have pushing and poping with stack (although it is O(1) time)
+	public static void iterativeQuickSort(int []arrayToSort){
+		Stack<Integer> st=new Stack<Integer>();
+		st.push(arrayToSort.length);
+		st.push(0);
+		while(!st.empty()){
+			int low=st.pop();
+			int high=st.pop();
+			int p=partitionQuickSort(arrayToSort,low,high);
 	
+			
+			
+			if(p-low>=1){
+				st.push(p);
+				st.push(low);
+			}
+			if(high-p>=2){
+				st.push(high);
+				st.push(p+1);
+			}
+		}
+
+	}
 	//partition takes O(n) time
 	public static int partitionQuickSort(int []arrayToSort,int start,int end){
 		int pivot=arrayToSort[end-1];
@@ -214,9 +239,10 @@ public class Main {
 				j++;
 			}	
 		}
-		int tmp=pivot;
-		pivot=arrayToSort[j];
-		arrayToSort[j]=tmp;
+	
+		arrayToSort[end-1]=arrayToSort[j];;
+		arrayToSort[j]=pivot;
+	
 		return j;
 	}
 	public static void main(String[] args) {
@@ -239,7 +265,7 @@ public class Main {
 		bubbleSort(arrayToSortBubble);
 		long endTimeBubble=System.nanoTime();
 		System.out.println(endTimeBubble-startTimeBubble);
-		
+	
 		int []arrayToSortInsertion=new int[n];
 		for(int i=0;i<arrayToSortInsertion.length;i++){
 			arrayToSortInsertion[i]=arrayToSortInsertion.length-i;
@@ -276,7 +302,7 @@ public class Main {
 		
 		int []arrayToQuickSort=new int[n];
 		for(int i=0;i<arrayToQuickSort.length;i++){
-			arrayToQuickSort[i]=arrayToQuickSort.length-i;
+			arrayToQuickSort[i]=(int)(Math.random()*1000);
 		}
 	
 		long startTimeQuick=System.nanoTime();
@@ -288,6 +314,19 @@ public class Main {
 		System.out.println();
 		System.out.println(endTimeQuick-startTimeQuick);
 		
+		int []arrayToItQuickSort=new int[n];
+		for(int i=0;i<arrayToItQuickSort.length;i++){
+			arrayToItQuickSort[i]=(int)(Math.random()*1000);
+		}
+		
+		long startTimeItQuick=System.nanoTime();
+		iterativeQuickSort(arrayToItQuickSort);
+		long endTimeItQuick=System.nanoTime();
+		for(int i=0;i<arrayToItQuickSort.length;i++){
+			System.out.print(arrayToItQuickSort[i]+" ");
+		}
+		System.out.println();
+		System.out.println(endTimeItQuick-startTimeItQuick);
 		
 		
 	}
