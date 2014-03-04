@@ -158,11 +158,14 @@ class Graph<E,W>{
 		start.setIsInMstSet(false);
 		start.setKey(0);
 		start.setParent(null);
+		//this runs O(V^2) times because of findMinKey function, which is O(V)
 		for(int i=0;i<nodes.size()-1;i++){
+			//this runs O(V) times
 			int min_index=findMinKey();
 	
 			Node<E> vertex=nodes.get(min_index);
 			vertex.setIsInMstSet(true);
+			//this overall runs O(E) times
 			for(int j=0;j<vertex.getAdjNodes().size();j++){
 				
 				if(vertex.getAdjNodes().get(j).getIsInMstSet()==false){
